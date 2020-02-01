@@ -4,7 +4,8 @@
   "description": "Can You Hit The Circle?",
   "main": "main.js",
   "scripts": {
-    "deploy": "gh-pages -d ."
+    "predeploy": "rimraf build; mkdir build; cp index.html main.js build",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
@@ -16,8 +17,9 @@
   "bugs": {
     "url": "https://github.com/lawki/hit-the-circle/issues"
   },
-  "homepage": "https://lawki.github.com/hit-the-circle",
+  "homepage": "https://lawki.github.io/hit-the-circle",
   "dependencies": {
-    "gh-pages": "^2.2.0"
+    "gh-pages": "^2.2.0",
+    "rimraf": "^3.0.1"
   }
 }
