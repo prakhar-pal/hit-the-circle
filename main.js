@@ -84,3 +84,4 @@ const gameEl = document.getElementById("game");
 const scoreEl = document.getElementById("score");
 let nextCircleId = -1;
 reset(-1);
+console.log("Hello HackerMan!");
