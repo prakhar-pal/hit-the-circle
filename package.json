@@ -1,0 +1,25 @@
+{
+  "name": "hit-the-circle",
+  "version": "0.0.1",
+  "description": "Can You Hit The Circle?",
+  "main": "main.js",
+  "scripts": {
+    "predeploy": "rimraf build; mkdir build; cp index.html main.js build",
+    "deploy": "gh-pages -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawki/hit-the-circle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lawki/hit-the-circle/issues"
+  },
+  "homepage": "https://lawki.github.io/hit-the-circle",
+  "dependencies": {
+    "gh-pages": "^2.2.0",
+    "rimraf": "^3.0.1"
+  }
+}
