@@ -2,10 +2,11 @@
   "name": "hit-the-circle",
   "version": "0.0.1",
   "description": "Can You Hit The Circle?",
-  "main": "main.js",
+  "source": "index.html",
   "scripts": {
     "predeploy": "rimraf build; mkdir build; cp index.html main.js build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "dev": "parcel index.html"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://lawki.github.io/hit-the-circle",
   "dependencies": {
     "gh-pages": "^2.2.0",
+    "parcel": "^2.15.4",
     "rimraf": "^3.0.1"
   }
 }
