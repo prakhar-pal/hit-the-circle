@@ -8,7 +8,7 @@ const gameEl = document.getElementById("game")!;
 document.addEventListener("DOMContentLoaded", initGame);
 
 function initGame() {
-  gameStore.dispatch("game-init", { gridSize: GRID_SIZE });
+  gameStore.dispatch("game-reset", { gridSize: GRID_SIZE });
   loadGrid();
   subscribeToGameEvents();
   const playButton = document.querySelector("#start-game");
@@ -18,10 +18,24 @@ function initGame() {
 }
 
 function subscribeToGameEvents() {
+  const actionsContainer = document.getElementById("game-actions");
+  const playButton = actionsContainer?.querySelector("#start-game");
+  const stopButton = actionsContainer?.querySelector("#stop-game");
   gameStore.subscribe((event) => {
     switch (event) {
       case "game-over": {
         showNotification("Game is over!", { variant: "success" });
+        break;
+      }
+      case "game-started": {
+        playButton?.classList.add("d-none");
+        stopButton?.classList.remove("d-none");
+        break;
+      }
+      case "game-reset":
+      case "game-stopped": {
+        playButton?.classList.remove("d-none");
+        stopButton?.classList.add("d-none");
         break;
       }
     }
@@ -32,8 +46,8 @@ function loadGrid() {
   const scoreEl = document.getElementById("score");
   gameStore.subscribe((event) => {
     switch (event) {
+      case "game-reset":
       case "score-updated": {
-        console.log("pp:score updated", gameStore.state.score);
         if (scoreEl) {
           scoreEl.innerHTML = String(gameStore.state.score);
         }
@@ -93,6 +107,8 @@ function createCircle(id: number): HTMLElement {
       currentCircle?.classList.add("circle-clicked");
     }
     switch (event) {
+      case "game-over":
+      case "game-reset":
       case "circle-clicked": {
         if (gameState.targetCircleId === id) {
           currentCircle?.classList.add("circle-next");

@@ -7,6 +7,7 @@
     "predeploy": "rimraf build; mkdir build; cp index.html main.js build",
     "deploy": "gh-pages -d build",
     "dev": "vite --port 8080",
+    "build": "vite build",
     "typecheck": "tsc src/main.ts --watch --noEmit"
   },
   "repository": {

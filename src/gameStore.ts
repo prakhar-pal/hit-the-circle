@@ -40,12 +40,9 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
   },
   listeners: [] as StateStoreListener<GameEvents, any>[],
   dispatch(event, data) {
-    const actionsContainer = document.getElementById("game-actions");
-    const playButton = actionsContainer?.querySelector("#start-game");
-    const stopButton = actionsContainer?.querySelector("#stop-game");
     const that = this;
     switch (event) {
-      case "game-init": {
+      case "game-reset": {
         const stateCopy = structuredClone({
           ...getDefaultGameState(),
           ...data,
@@ -59,16 +56,13 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
         const stateCopy = { ...this.state };
         stateCopy.status = "running";
         this.setState(stateCopy);
-        playButton?.classList.add("d-none");
-        stopButton?.classList.remove("d-none");
         break;
       }
+      case "game-over":
       case "game-stopped": {
         const stateCopy = { ...getDefaultGameState() };
         this.setState(stateCopy);
-        playButton?.classList.remove("d-none");
-        stopButton?.classList.add("d-none");
-        gameStore.dispatch("game-init");
+        gameStore.dispatch("game-reset");
         break;
       }
       case "score-updated": {
@@ -84,8 +78,6 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
           if (stateCopy.targetCircleId === -1) {
             stateCopy.status = "stopped";
             gameStore.dispatch("game-over");
-            gameStore.dispatch("game-stopped");
-            gameStore.dispatch("game-init");
           }
         }
         this.setState(stateCopy);

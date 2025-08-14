@@ -24,5 +24,4 @@ export type GameEvents =
   | "game-over"
   | "game-stopped"
   | "score-updated"
-  | "game-reset"
-  | "game-init";
+  | "game-reset";
