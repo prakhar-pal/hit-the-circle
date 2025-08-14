@@ -22,7 +22,7 @@
   },
   "homepage": "https://lawki.github.io/hit-the-circle",
   "dependencies": {
-    "gh-pages": "^2.2.0",
+    "gh-pages": "^5.0.0",
     "parcel": "^2.15.4",
     "rimraf": "^3.0.1"
   },
