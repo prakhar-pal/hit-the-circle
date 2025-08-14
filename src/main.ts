@@ -82,7 +82,6 @@ function startGame() {
 
 function stopGame() {
   gameStore.dispatch("game-stopped");
-  gameStore.dispatch("game-reset");
 }
 
 function createCircle(id: number): HTMLElement {

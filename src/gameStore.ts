@@ -5,13 +5,13 @@ import type {
   StateStoreListener,
 } from "./types";
 
-const defaultGameState: GameState = {
+const getDefaultGameState: () => GameState = () => ({
   score: 0,
   selectedCircles: new Set(),
   status: "stopped",
   targetCircleId: -1,
   gridSize: 0,
-};
+});
 
 export function getNextCircle(gameState: GameState) {
   const { gridSize } = gameState;
@@ -34,7 +34,7 @@ export function checkGameOver({
 }
 
 export const gameStore: IStateStore<GameEvents, GameState> = {
-  state: structuredClone(defaultGameState),
+  state: structuredClone(getDefaultGameState()),
   setState(newState: GameState) {
     this.state = newState;
   },
@@ -46,7 +46,10 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
     const that = this;
     switch (event) {
       case "game-init": {
-        const stateCopy = structuredClone({ ...defaultGameState, ...data });
+        const stateCopy = structuredClone({
+          ...getDefaultGameState(),
+          ...data,
+        });
         stateCopy.targetCircleId = getNextCircle(stateCopy);
         console.log(stateCopy.targetCircleId);
         this.setState(stateCopy);
@@ -61,11 +64,11 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
         break;
       }
       case "game-stopped": {
-        const stateCopy = { ...this.state };
-        stateCopy.status = "stopped";
+        const stateCopy = { ...getDefaultGameState() };
         this.setState(stateCopy);
         playButton?.classList.remove("d-none");
         stopButton?.classList.add("d-none");
+        gameStore.dispatch("game-init");
         break;
       }
       case "score-updated": {
@@ -76,16 +79,14 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
         const clickedCircleIndex = data as number;
         const stateCopy = { ...this.state };
         if (this.state.targetCircleId === clickedCircleIndex) {
-          stateCopy.selectedCircles.add(clickedCircleIndex);
           stateCopy.targetCircleId = getNextCircle(stateCopy);
+          stateCopy.selectedCircles.add(clickedCircleIndex);
           if (stateCopy.targetCircleId === -1) {
             stateCopy.status = "stopped";
             gameStore.dispatch("game-over");
             gameStore.dispatch("game-stopped");
+            gameStore.dispatch("game-init");
           }
-          stateCopy.score += 1;
-        } else {
-          stateCopy.score -= 1;
         }
         this.setState(stateCopy);
         break;
@@ -94,10 +95,10 @@ export const gameStore: IStateStore<GameEvents, GameState> = {
     console.log("gameStore::dispatch", this.state, event);
     this.listeners.forEach((listener) => listener(event, that.state));
   },
-  subscribe(fn: Function) {
+  subscribe(fn: StateStoreListener<GameEvents, any>) {
     this.listeners.push(fn);
   },
-  unsubscribe(fn: Function) {
+  unsubscribe(fn: StateStoreListener<GameEvents, any>) {
     this.listeners = this.listeners.filter((listener) => listener != fn);
   },
   unsubscribeAll() {
