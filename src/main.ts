@@ -2,7 +2,7 @@ import { checkGameOver, gameStore } from "./gameStore";
 import { showNotification } from "./showNotification";
 import type { GameState, GameEvents } from "./types";
 
-const GRID_SIZE = 2;
+const GRID_SIZE = 6;
 const gameEl = document.getElementById("game")!;
 
 document.addEventListener("DOMContentLoaded", initGame);
